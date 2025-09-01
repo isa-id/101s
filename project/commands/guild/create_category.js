@@ -1,3 +1,4 @@
+// create_category.js
 const { SlashCommandBuilder, ChannelType } = require('discord.js');
 
 module.exports = {
