@@ -2,6 +2,7 @@
 const { SlashCommandBuilder, ChannelType } = require('discord.js');
 
 module.exports = {
+    cooldown: 5,
     data: new SlashCommandBuilder()
         .setName('create_category')
         .setDescription('Creates a new category in the server.')

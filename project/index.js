@@ -7,12 +7,11 @@ const { token } = require('./config.json');
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
+client.cooldowns = new Collection();
+
 // When the client is ready, run this code (only once).
 // The distinction between `client: Client<boolean>` and `readyClient: Client<true>` is important for TypeScript developers.
 // It makes some properties non-nullable.
-
-// Log in to Discord with your client's token
-client.login(token);
 
 // Load commands
 client.commands = new Collection();
@@ -40,3 +39,28 @@ for (const folder of commandFolders) {
 		}
 	}
 }
+// Construct the path to the events folder
+const eventsPath = path.join(__dirname, 'events');
+// Read all .js files in the events folder
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+// Loop through each event file
+// For each file, construct the path to the file and require it
+// Then, depending on whether the event should be handled once or multiple times, attach the appropriate listener to the client
+
+for (const file of eventFiles) {
+	// Construct the full path to the event file
+	const filePath = path.join(eventsPath, file);
+	// Require the event file
+	const event = require(filePath);
+	// Check if the event should be handled once or multiple times
+	if (event.once) {
+		// Attach a one-time listener for the event
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		// Attach a listener for the event
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+}
+
+// Log in to Discord with your client's token
+client.login(token);

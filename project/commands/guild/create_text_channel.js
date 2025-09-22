@@ -1,7 +1,9 @@
 // create_text_channel.js
 const { SlashCommandBuilder, ChannelType, PermissionFlagsBits } = require('discord.js');
+const { cooldown } = require('./create_category');
 
 module.exports = {
+    cooldown: 5,
     data: new SlashCommandBuilder()
         .setName('create_channel')
         .setDescription('Creates a new text channel in the server.')

@@ -2,6 +2,7 @@
 const { SlashCommandBuilder, ChannelType, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
+    cooldown: 5,
     data: new SlashCommandBuilder()
         .setName('create_voice_channel')
         .setDescription('Creates a new voice channel in the server.')
